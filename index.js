@@ -1,10 +1,13 @@
 require("dotenv").config();
 
 const express = require('express');
+const cors = require("cors");
 const mongoose = require("mongoose");
 const app = express();
 const port = process.env.PORT || 3000;
 const databaseURL = process.env.MONGODB;
+
+
 
 // Routes
 const userRoutes = require('./routes/userRoutes')
@@ -14,6 +17,14 @@ const movieRoutes = require('./routes/movieRoutes')
 app.get('/', (req, res) => {
   res.send({ message: "API is working" });
 });
+
+app.use(cors({
+  origin: [
+    "http://localhost:4173",
+    "http://localhost:5173",
+  ],
+  credentials: true
+}));
 
 // Body parsing
 app.use(express.json());
