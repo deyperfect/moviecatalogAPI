@@ -2,7 +2,7 @@ const Movie = require("../models/Movie");
 
 const addMovie = async (req, res) => {
   try {
-    const { title, director, year, description, genre } = req.body;
+    const { title, director, year, description, genre, image } = req.body;
 
     if (!title || !director || !year || !description || !genre) {
       return res.status(400).send({ error: "All fields are required." });
@@ -14,6 +14,7 @@ const addMovie = async (req, res) => {
       year: year,
       description: description,
       genre: genre,
+      image
     });
 
     const savedMovie = await newMovie.save();
@@ -47,7 +48,7 @@ const getMovies = async (req, res) => {
 
 const updateMovie = async (req, res) => {
   try {
-    const { title, director, year, description, genre } = req.body;
+    const { title, director, year, description, genre, image } = req.body;
 
     if (!title || !director || !year || !description || !genre) {
       return res.status(400).send({ error: "All fields are required." });
@@ -59,7 +60,7 @@ const updateMovie = async (req, res) => {
 
     const updatedMovie = await Movie.findByIdAndUpdate(
       req.params.id,
-      { title, director, year, description, genre },
+      { title, director, year, description, genre, image },
       { new: true },
     );
 
