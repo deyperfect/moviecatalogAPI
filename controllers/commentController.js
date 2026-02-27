@@ -19,7 +19,7 @@ const addComment = async (req, res) => {
       req.params.id,
       { $push: { comments: { userId, username, comment } } },
       { new: true, runValidators: true }
-    );
+    ).populate('comments.userId', 'username');
 
     if (!updatedMovie) {
       return res.status(404).send({ error: "Movie not found" });
