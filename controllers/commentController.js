@@ -25,10 +25,13 @@ const addComment = async (req, res) => {
       return res.status(404).send({ error: "Movie not found" });
     }
 
+    const newComment = updatedMovie.comments[updatedMovie.comments.length - 1];
+
     return res.status(201).send({
       message: "Comment added successfully",
-      updatedMovie
+      comment: newComment
     });
+
   } catch (err) {
     console.error(err);
     return res.status(500).send({ error: "Failed to add comment, please try again." });

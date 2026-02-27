@@ -104,7 +104,8 @@ const getMovie = async (req, res) => {
       return res.status(400).send({ error: "Movie ID is required" });
     }
 
-    const movie = await Movie.findById(req.params.id);
+    const movie = await Movie.findById(req.params.id)
+    .populate('comments.userId', 'username');
 
     if (!movie) {
         return res.status(404).send({ message: "Movie not found" });
