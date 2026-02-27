@@ -17,7 +17,7 @@ const addComment = async (req, res) => {
 
     const updatedMovie = await Movie.findByIdAndUpdate(
       req.params.id,
-      { $push: { comments: { userId, username, comment } } },
+      { $push: { comments: { userId, comment } } },
       { new: true, runValidators: true }
     ).populate('comments.userId', 'username');
 
