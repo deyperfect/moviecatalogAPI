@@ -18,7 +18,7 @@ const addComment = async (req, res) => {
     const updatedMovie = await Movie.findByIdAndUpdate(
       req.params.id,
       { $push: { comments: { userId, comment } } },
-      { new: true, runValidators: true }
+      { new: true }
     ).populate('comments.userId', 'username');
 
     if (!updatedMovie) {
@@ -61,7 +61,24 @@ const getComments = async (req, res) => {
 };
 
 
+const deleteComment = async (req, res) => {
+  try {
+    const { movieId, commentId } = req.params;
+    const movie = await Movie.findByIdAndUpdate(
+      movieId,
+      { $pull: { comments: { _id: commentId } } },
+      { new: true }
+    );
+    if (!movie) return res.status(404).send({ error: "Movie not found" });
+    return res.status(200).send({ message: "Comment deleted successfully" });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send({ error: "Failed to delete comment" });
+  }
+};
+
 module.exports = { 
     addComment,
-    getComments
+    getComments,
+    deleteComment
 };
