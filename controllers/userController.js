@@ -5,7 +5,7 @@ const auth = require('../auth.js');
 
 const registerUser = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { username, email, password } = req.body;
         const requiredChar = "@";
         const saltRounds = 12;
 
@@ -22,6 +22,7 @@ const registerUser = async (req, res) => {
         }
 
         const newUser = new User ({
+            username: username,
             email: email,
             password: bcrypt.hashSync(password, saltRounds)
         })

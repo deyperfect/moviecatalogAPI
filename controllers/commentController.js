@@ -13,9 +13,11 @@ const addComment = async (req, res) => {
       return res.status(400).send({ error: "Movie ID is required" });
     }
 
+    const username = req.user.username; 
+
     const updatedMovie = await Movie.findByIdAndUpdate(
       req.params.id,
-      { $push: { comments: { userId, comment } } },
+      { $push: { comments: { userId, username, comment } } },
       { new: true, runValidators: true }
     );
 
@@ -41,7 +43,8 @@ const getComments = async (req, res) => {
       return res.status(400).send({ error: "Movie ID is required" });
     }
 
-    const movie = await Movie.findById(movieId, { comments: 1 });
+    const movie = await Movie.findById(movieId, { comments: 1 })
+    .populate('comments.userId', 'username');
 
     if (!movie) {
       return res.status(404).send({ error: "Movie not found" });
